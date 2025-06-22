@@ -39,17 +39,21 @@ function App() {
       element: <Dashboard />,
       children: [
         {
-          path: '/dashboard',
+          path: 'analytics',
           element: <Welcome />
         },
         {
           path: 'todos',
-          element: <h1>Analytics</h1>
+          element: <h1>Todos</h1>
+        },
+        {
+          path: 'users',
+          element: <h1>Users</h1>
         },
         {
           path: 'profile',
-          element: <h1>Analytics</h1>
-        }
+          element: <h1>Profile</h1>
+        },
       ]
     },
     {
@@ -66,7 +70,6 @@ function App() {
           error: 'bg-red-500 text-white',
           success: 'bg-green-500 text-white',
           info: 'bg-blue-500 text-white',
-
         }
 
       }} />
