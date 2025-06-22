@@ -11,6 +11,7 @@ import VerifyUser from './pages/auth/VerifyUser'
 import { Toaster } from 'sonner'
 import Welcome from './pages/dashboard/Welcome'
 import Todos from './pages/dashboard/main/todos/Todos'
+import Users from './pages/dashboard/main/users/Users'
 
 
 function App() {
@@ -49,7 +50,7 @@ function App() {
         },
         {
           path: 'users',
-          element: <h1>Users</h1>
+          element: <Users />
         },
         {
           path: 'profile',

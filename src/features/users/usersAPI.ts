@@ -37,6 +37,19 @@ export const usersAPI = createApi({ // sets up API endpoints for user management
                 body: data,
             }),
         }),
+        getUsers: builder.query<TUser[], void>({
+            query: () => '/users',
+            providesTags: ['Users']
+        }),
+        // update user
+        updateUser: builder.mutation<TUser, Partial<TUser> & { id: number }>({
+            query: (user) => ({
+                url: `/user/${user.id}`,
+                method: 'PUT',
+                body: user,
+            }),
+            invalidatesTags: ['Users']
+        }),
     })
 })
 

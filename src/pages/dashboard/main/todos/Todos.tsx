@@ -49,10 +49,10 @@ const Todos = () => {
             {todosLoading && <p>Loading todos...</p>}
             {todoError && <p className="text-red-500">Error fetching todos</p>}
             {todosData && todosData.data && todosData.data.length > 0 ? (
-                <div className="overflow-x-auto">
-                    <table className="table table-xs table-pin-rows table-pin-cols ">
+                <div className="md:overflow-x-auto">
+                    <table className="table table-xs">
                         <thead>
-                            <tr className=" bg-gray-600 text-white text-xl ">
+                            <tr className=" bg-gray-600 text-white text-md lg:text-lg">
                                 <th className="px-4 py-2">Todo Name</th>
                                 <th className="px-4 py-2">Description</th>
                                 <th className="px-4 py-2">Due Date</th>

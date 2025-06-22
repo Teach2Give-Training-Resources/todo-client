@@ -28,8 +28,9 @@ const DeleteTodo = ({ todo }: DeleteTodoProps) => {
     };
 
     return (
-        <dialog id="delete_modal" className="modal modal-bottom sm:modal-middle">
-            <div className="modal-box bg-gray-600 text-white">
+        <dialog id="delete_modal" className="modal sm:modal-middle">
+            <div className="modal-box bg-gray-600 text-white w-full max-w-xs sm:max-w-lg mx-auto rounded-lg">
+
                 <h3 className="font-bold text-lg mb-4">Delete Todo</h3>
                 <p className="mb-6">
                     Are you sure you want to delete <span className="font-semibold">{todo?.todoName}</span>?
