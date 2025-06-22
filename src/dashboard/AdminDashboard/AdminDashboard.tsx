@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Outlet } from "react-router";
 import Navbar from "../../components/nav/Navbar";
-import Drawer from "../../components/aside/Drawer";
+import AdminDrawer from "./aside/AdminDrawer";
 import { FaBars } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 import Footer from "../../components/footer/Footer";
 
-const Dashboard = () => {
+const AdminDashboard = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     const handleDrawerToggle = () => {
@@ -49,7 +49,7 @@ const Dashboard = () => {
                         >
                             <IoCloseSharp />
                         </button>
-                        <Drawer />
+                        <AdminDrawer />
                     </div>
                 </aside>
 
@@ -63,4 +63,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default AdminDashboard;

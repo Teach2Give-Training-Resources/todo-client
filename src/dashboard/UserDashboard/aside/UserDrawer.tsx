@@ -1,8 +1,8 @@
 import { Link } from "react-router"
-import { drawerData } from "./drawerData"
+import { userDrawerData } from "./drawerData"
 
 
-const Drawer = () => {
+const UserDrawer = () => {
     return (
         <div>
 
@@ -11,7 +11,7 @@ const Drawer = () => {
             </h2>
             <ul>
                 {
-                    drawerData.map((item) => (
+                    userDrawerData.map((item) => (
                         <li key={item.id}>
                             <Link
                                 to={item.link}
@@ -30,4 +30,4 @@ const Drawer = () => {
     )
 }
 
-export default Drawer
+export default UserDrawer

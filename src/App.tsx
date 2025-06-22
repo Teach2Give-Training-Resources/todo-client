@@ -5,17 +5,24 @@ import LandingPage from './pages/LandingPage'
 import Register from './pages/auth/Register'
 import Login from './pages/auth/Login'
 import AboutPage from './pages/AboutPage'
-import Dashboard from './pages/dashboard/Dashboard'
+import AdminDashboard from './dashboard/AdminDashboard/AdminDashboard'
 import Error from './components/error/Error'
 import VerifyUser from './pages/auth/VerifyUser'
 import { Toaster } from 'sonner'
-import Welcome from './pages/dashboard/Welcome'
-import Todos from './pages/dashboard/main/todos/Todos'
-import Users from './pages/dashboard/main/users/Users'
-import Profile from './pages/dashboard/main/users/Profile'
+import Todos from './dashboard/AdminDashboard/todos/Todos'
+import Users from './dashboard/AdminDashboard/manageUsers/Users'
+import Profile from './dashboard/AdminDashboard/Profile'
+import { type RootState } from './app/store'
+import { useSelector } from 'react-redux'
+import UserTodos from './dashboard/UserDashboard/todos/UserTodos'
+import UserProfile from './dashboard/UserDashboard/UserProfile'
+import UserDashboard from './dashboard/UserDashboard/UserDashboard'
 
 
 function App() {
+  const isAdmin = useSelector((state: RootState) => state.user.user?.role === 'admin');
+  const isUser = useSelector((state: RootState) => state.user.user?.role === 'user');
+
   const router = createBrowserRouter([
     {
       path: '/',
@@ -37,13 +44,14 @@ function App() {
       path: '/login',
       element: <Login />
     },
+    // Admin Dashboard Routes
     {
-      path: '/dashboard',
-      element: <Dashboard />,
+      path: '/admin/dashboard',
+      element: isAdmin ? <AdminDashboard /> : <Login />,
       children: [
         {
           path: 'analytics',
-          element: <Welcome />
+          element: <h1>Analytics</h1>
         },
         {
           path: 'todos',
@@ -56,6 +64,26 @@ function App() {
         {
           path: 'profile',
           element: <Profile />
+        },
+      ]
+    },
+
+    // User dashboard routes
+    {
+      path: '/user/dashboard',
+      element: isUser ? <UserDashboard /> : <Login />,
+      children: [
+        {
+          path: 'analytics',
+          element: <h1>Analytics</h1>
+        },
+        {
+          path: 'todos',
+          element: <UserTodos />
+        },
+        {
+          path: 'profile',
+          element: <UserProfile />
         },
       ]
     },

@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import { todosAPI, type TTodo } from "../../../../features/todos/todosAPI";
+import { todosAPI, type TTodo } from "../../../features/todos/todosAPI";
 
 type DeleteTodoProps = {
     todo: TTodo | null;

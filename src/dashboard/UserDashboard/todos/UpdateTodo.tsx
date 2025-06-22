@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { todosAPI, type TTodo } from "../../../../features/todos/todosAPI";
+import { todosAPI, type TTodo } from "../../../features/todos/todosAPI";
 import { toast } from "sonner";
 
 type UpdateTodoProps = {

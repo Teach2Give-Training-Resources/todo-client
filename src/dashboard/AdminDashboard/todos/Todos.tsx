@@ -1,4 +1,4 @@
-import { todosAPI, type TTodo } from "../../../../features/todos/todosAPI"
+import { todosAPI, type TTodo } from "../../../features/todos/todosAPI"
 import { FaEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import CreateTodos from "./CreateTodos";

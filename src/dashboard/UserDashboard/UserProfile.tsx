@@ -1,13 +1,10 @@
-
-
-import { type RootState } from "../../../../app/store"
+import { type RootState } from "../../app/store";
 import { useSelector } from 'react-redux';
-import { usersAPI } from '../../../../features/users/usersAPI';
-import UpdateProfile from "./UpdateProfile";
+import { usersAPI } from "../../features/users/usersAPI";
+import UpdateProfile from "../AdminDashboard/manageUsers/UpdateProfile";
 
 
-
-const Profile = () => {
+const UserProfile = () => {
     const user = useSelector((state: RootState) => state.user);
     const user_id = user.user?.user_id;
 
@@ -55,4 +52,4 @@ const Profile = () => {
     );
 }
 
-export default Profile
+export default UserProfile

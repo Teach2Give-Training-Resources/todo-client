@@ -1,10 +1,15 @@
+import { useEffect } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { todosAPI } from "../../../../features/todos/todosAPI";
+import { todosAPI, type TTodo } from "../../../features/todos/todosAPI";
 import { toast } from "sonner";
 
-type CreateTodoInputs = {
+type UpdateTodoProps = {
+    todo: TTodo | null; //can be null if no todo is selected
+};
+
+type UpdateTodoInputs = {
     todoName: string;
     description: string;
     userId: number;
@@ -20,45 +25,63 @@ const schema = yup.object({
     dueDate: yup.string().required("Due date is required"),
 });
 
-const CreateTodos = () => {
-    const [createTodo, { isLoading }] = todosAPI.useCreateTodoMutation();
+const UpdateTodo = ({ todo }: UpdateTodoProps) => {
+    const [updateTodo, { isLoading, },] = todosAPI.useUpdateTodoMutation({ fixedCacheKey: "updateTodo", });
 
     const {
         register,
         handleSubmit,
         reset,
+        setValue,
         formState: { errors },
-    } = useForm<CreateTodoInputs>({
+    } = useForm<UpdateTodoInputs>({
         resolver: yupResolver(schema),
     });
 
-    const onSubmit: SubmitHandler<CreateTodoInputs> = async (data) => {
+    // Populate form when todo changes
+    useEffect(() => {
+        if (todo) {
+            setValue("todoName", todo.todoName);
+            setValue("description", todo.description);
+            setValue("userId", todo.userId);
+            setValue("dueDate", todo.dueDate.slice(0, 10));
+            setValue("isCompleted", todo.isCompleted);
+        } else {
+            reset();
+        }
+    }, [todo, setValue, reset]);
+
+    const onSubmit: SubmitHandler<UpdateTodoInputs> = async (data) => {
         try {
-            await createTodo(data).unwrap();
-            // console.log("Todo created successfully:", response);
-            toast.success("Todo created successfully!");
+            if (!todo) {
+                toast.error("No todo selected for update.");
+                return;
+            }
+
+            const response = await updateTodo({ ...data, id: todo.id })
+            console.log("Todo updated successfully:", response);
+            toast.success("Todo updated successfully!");
             reset(); // Clear the form after successful submission
-            (document.getElementById('my_modal_5') as HTMLDialogElement)?.close();
+            (document.getElementById('update_modal') as HTMLDialogElement)?.close();
 
         } catch (error) {
-            console.error("Error creating todo:", error);
-            toast.error("Failed to create todo. Please try again.");
+            console.error("Error updating todo:", error);
+            toast.error("Failed to update todo. Please try again.");
 
         }
     };
 
     return (
-        <dialog id="my_modal_5" className="modal sm:modal-middle">
+        <dialog id="update_modal" className="modal sm:modal-middle">
             <div className="modal-box bg-gray-600 text-white w-full max-w-xs sm:max-w-lg mx-auto rounded-lg">
 
-                <h3 className="font-bold text-lg mb-4">Create New Todo</h3>
+                <h3 className="font-bold text-lg mb-4">Update Todo</h3>
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
                     <input
                         type="text"
                         {...register("todoName")}
                         placeholder="Todo Name"
                         className="input rounded w-full p-2 focus:ring-2 focus:ring-blue-500 text-lg bg-white text-gray-800"
-
                     />
                     {errors.todoName && (
                         <span className="text-sm text-red-700">{errors.todoName.message}</span>
@@ -79,7 +102,6 @@ const CreateTodos = () => {
                         placeholder="User ID"
                         className="input rounded w-full p-2 focus:ring-2 focus:ring-blue-500 text-lg bg-white text-gray-800"
                     />
-
                     {errors.userId && (
                         <span className="text-sm text-red-700">{errors.userId.message}</span>
                     )}
@@ -111,8 +133,7 @@ const CreateTodos = () => {
                                         type="radio"
                                         value="false"
                                         {...register("isCompleted")}
-                                        className="radio radio-primary  text-yellow-400"
-                                        defaultChecked
+                                        className="radio radio-primary text-yellow-400"
                                     />
                                     Pending
                                 </label>
@@ -127,20 +148,20 @@ const CreateTodos = () => {
                         <button type="submit" className="btn btn-primary" disabled={isLoading}>
                             {isLoading ? (
                                 <>
-                                    <span className="loading loading-spinner text-primary" /> Creating...
+                                    <span className="loading loading-spinner text-primary" /> Updating...
                                 </>
-                            ) : "Create"}
+                            ) : "Update"}
                         </button>
                         <button
                             className="btn"
                             type="button"
                             onClick={() => {
-                                (document.getElementById('my_modal_5') as HTMLDialogElement)?.close();
+                                (document.getElementById('update_modal') as HTMLDialogElement)?.close();
+                                reset();
                             }}
                         >
                             Close
                         </button>
-
                     </div>
                 </form>
             </div>
@@ -148,4 +169,4 @@ const CreateTodos = () => {
     );
 };
 
-export default CreateTodos;
+export default UpdateTodo;

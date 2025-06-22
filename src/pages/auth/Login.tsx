@@ -48,8 +48,11 @@ function Login() {
             console.log("Login response:", response);
             toast.success("Login successful!");
 
-            navigate('/dashboard');
-
+            if (response.user.role === 'admin') {
+                navigate('/admin/dashboard/todos');
+            } else if (response.user.role === 'user') {
+                navigate('/user/dashboard/todos');
+            }
 
         } catch (error) {
             console.log("Login error:", error);

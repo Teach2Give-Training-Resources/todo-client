@@ -11,7 +11,7 @@ export type DrawerData = {
     link: string;
 }
 
-export const drawerData: DrawerData[] = [
+export const adminDrawerData: DrawerData[] = [
     {
         id: "analytics",
         name: "Analytics",
