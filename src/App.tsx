@@ -12,6 +12,7 @@ import { Toaster } from 'sonner'
 import Welcome from './pages/dashboard/Welcome'
 import Todos from './pages/dashboard/main/todos/Todos'
 import Users from './pages/dashboard/main/users/Users'
+import Profile from './pages/dashboard/main/users/Profile'
 
 
 function App() {
@@ -54,7 +55,7 @@ function App() {
         },
         {
           path: 'profile',
-          element: <h1>Profile</h1>
+          element: <Profile />
         },
       ]
     },

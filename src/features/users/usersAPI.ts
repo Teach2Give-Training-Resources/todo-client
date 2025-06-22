@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ApiDomain } from "../../utils/ApiDomain";
+import type { RootState } from "../../app/store";
 
 
 export type TUser = {
@@ -10,12 +11,22 @@ export type TUser = {
     password: string;
     role: string;
     isVerified: string;
+    image_url?: string;
+
 }
 
 export const usersAPI = createApi({ // sets up API endpoints for user management - creating users and verifying them etc
     reducerPath: 'usersAPI', // this is the key in the store where the API state will be stored - name of the API in the store
     baseQuery: fetchBaseQuery({
-        baseUrl: ApiDomain // base URL for the API - this is the domain where the API is hosted
+        baseUrl: ApiDomain, // base URL for the API - this is the domain where the API is hosted
+        prepareHeaders: (headers, { getState }) => {
+            const token = (getState() as RootState).user.token; // get the token from the user slice of the state
+            if (token) {
+                headers.set('Authorization', `Bearer ${token}`); // set the Authorization header with the token
+            }
+            headers.set('Content-Type', 'application/json'); // set the Content-Type header to application/json
+            return headers; // return the headers to be used in the request
+        }
     }), // base query function that will be used to make requests to the API
 
     // used to invalidate the cache when a mutation is performed 
@@ -50,6 +61,10 @@ export const usersAPI = createApi({ // sets up API endpoints for user management
             }),
             invalidatesTags: ['Users']
         }),
+        getUserById: builder.query<TUser, number>({
+            query: (id) => `/user/${id}`,
+        }),
+
     })
 })
 
