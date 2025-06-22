@@ -3,9 +3,9 @@ import type { RootState } from "../../app/store"
 
 
 const Welcome = () => {
-    const currentUser = useSelector((state: RootState) => state.user)
+    const currentUser = useSelector((state: RootState) => state.user.user)
     console.log("currentUser", currentUser);
-    const name = currentUser.user?.first_name
+    const name = currentUser?.first_name
     console.log("name", name);
     return (
         <div>Welcome

@@ -26,7 +26,9 @@ const schema = yup.object({
 
 function Register() {
     const navigate = useNavigate();
-    const [createUser] = usersAPI.useCreateUsersMutation()
+    const [createUser, { isLoading }] = usersAPI.useCreateUsersMutation(
+        { fixedCacheKey: 'createUser' } // Ensures the mutation is not re-fetched unnecessarily
+    )
 
     const {
         register,
@@ -48,87 +50,92 @@ function Register() {
                     state: { email: data.email }
                 });
             }, 2000);
-    } catch (error) {
-        console.log("Error", error);
+        } catch (error) {
+            console.log("Error", error);
 
-    }
+        }
 
-};
+    };
 
-return (
-    <div className="flex justify-center items-center min-h-screen bg-base-200 ">
-        <div className="w-full max-w-lg p-8 rounded-xl shadow-lg bg-white">
-            <h1 className="text-3xl font-bold mb-6 text-center">Account Registration</h1>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    return (
+        <div className="flex justify-center items-center min-h-screen bg-base-200 ">
+            <div className="w-full max-w-lg p-8 rounded-xl shadow-lg bg-white">
+                <h1 className="text-3xl font-bold mb-6 text-center">Account Registration</h1>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 
-                <input
-                    type="text"
-                    {...register('firstName')}
-                    placeholder="First Name"
-                    className='input border border-gray-300 rounded w-full p-2 focus:ring-2 focus:ring-blue-500 text-lg '
-                />
+                    <input
+                        type="text"
+                        {...register('firstName')}
+                        placeholder="First Name"
+                        className='input border border-gray-300 rounded w-full p-2 focus:ring-2 focus:ring-blue-500 text-lg '
+                    />
 
-                {errors.firstName && (
-                    <span className=" text-red-700 text-sm">{errors.firstName.message}</span>
-                )}
+                    {errors.firstName && (
+                        <span className=" text-red-700 text-sm">{errors.firstName.message}</span>
+                    )}
 
-                <input
-                    type="text"
-                    {...register('lastName')}
-                    placeholder="Last Name"
-                    className='input border border-gray-300 rounded w-full p-2 focus:ring-2 focus:ring-blue-500 text-lg '
-                />
+                    <input
+                        type="text"
+                        {...register('lastName')}
+                        placeholder="Last Name"
+                        className='input border border-gray-300 rounded w-full p-2 focus:ring-2 focus:ring-blue-500 text-lg '
+                    />
 
-                {errors.lastName && (
-                    <span className=" text-red-700 text-sm">{errors.lastName.message}</span>
-                )}
+                    {errors.lastName && (
+                        <span className=" text-red-700 text-sm">{errors.lastName.message}</span>
+                    )}
 
-                <input
-                    type="email"
-                    {...register('email')}
-                    placeholder="Email"
-                    className='input border border-gray-300 rounded w-full p-2 focus:ring-2 focus:ring-blue-500 text-lg '
-                />
+                    <input
+                        type="email"
+                        {...register('email')}
+                        placeholder="Email"
+                        className='input border border-gray-300 rounded w-full p-2 focus:ring-2 focus:ring-blue-500 text-lg '
+                    />
 
-                {errors.email && (
-                    <span className=" text-red-700 text-sm">{errors.email.message}</span>
-                )}
+                    {errors.email && (
+                        <span className=" text-red-700 text-sm">{errors.email.message}</span>
+                    )}
 
-                <input
-                    type="password"
-                    {...register('password')}
-                    placeholder="Password"
-                    className='input border border-gray-300 rounded w-full p-2 focus:ring-2 focus:ring-blue-500 text-lg '
-                />
+                    <input
+                        type="password"
+                        {...register('password')}
+                        placeholder="Password"
+                        className='input border border-gray-300 rounded w-full p-2 focus:ring-2 focus:ring-blue-500 text-lg '
+                    />
 
-                {errors.password && (
-                    <span className=" text-red-700 text-sm">{errors.password.message}</span>
-                )}
+                    {errors.password && (
+                        <span className=" text-red-700 text-sm">{errors.password.message}</span>
+                    )}
 
-                <input
-                    type="password"
-                    {...register('confirmPassword')}
-                    placeholder="Confirm Password"
-                    className='input border border-gray-300 rounded w-full p-2 focus:ring-2 focus:ring-blue-500 text-lg '
-                />
+                    <input
+                        type="password"
+                        {...register('confirmPassword')}
+                        placeholder="Confirm Password"
+                        className='input border border-gray-300 rounded w-full p-2 focus:ring-2 focus:ring-blue-500 text-lg '
+                    />
 
-                {errors.confirmPassword && (
-                    <span className=" text-red-700 text-sm">{errors.confirmPassword.message}</span>
-                )}
+                    {errors.confirmPassword && (
+                        <span className=" text-red-700 text-sm">{errors.confirmPassword.message}</span>
+                    )}
 
-                <button type="submit" className="btn btn-primary w-full mt-4">
-                    Register
-                </button>
-            </form>
-            <p className="mt-6 text-center text-gray-600">
-                Already have an account?{' '}
-                <a href="/login" className="text-blue-600 hover:underline">
-                    Login
-                </a>
-            </p>
+                    <button type="submit" className="btn btn-primary w-full mt-4" disabled={isLoading}>
+                        {isLoading ? (
+                            <>
+                                <span className="loading loading-spinner text-primary" /> Registering...
+                            </>
+                        ) : "Register"}
+                    </button>
+
+                </form>
+                <p className="mt-6 text-center text-gray-600">
+                    Already have an account?{' '}
+                    <a href="/login" className="text-blue-600 hover:underline">
+                        Login
+                    </a>
+                </p>
+            </div>
         </div>
-    </div>
-);
+    );
 }
 
 export default Register;

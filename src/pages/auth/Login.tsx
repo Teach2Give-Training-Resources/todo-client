@@ -24,7 +24,7 @@ function Login() {
 
     const emailFromState = location.state?.email || ''
 
-    const [loginUser] = loginAPI.useLoginUserMutation()
+    const [loginUser, { isLoading }] = loginAPI.useLoginUserMutation()
 
 
     const {
@@ -42,15 +42,14 @@ function Login() {
         console.log('Login data:', data);
 
         try {
-            const response = await loginUser(data).unwrap();
+            const response = await loginUser(data).unwrap()
             dispatch(loginSuccess(response))
 
             console.log("Login response:", response);
             toast.success("Login successful!");
 
-            setTimeout(() => {
-                navigate('/dashboard');
-            }, 1000);
+            navigate('/dashboard');
+
 
         } catch (error) {
             console.log("Login error:", error);
@@ -86,8 +85,13 @@ function Login() {
                         <span className="text-sm text-red-700">{errors.password.message}</span>
                     )}
 
-                    <button type="submit" className="btn btn-primary w-full mt-4">
-                        Login
+
+                    <button type="submit" className="btn btn-primary w-full mt-4" disabled={isLoading}>
+                        {isLoading ? (
+                            <>
+                                <span className="loading loading-spinner text-primary" /> Logining...
+                            </>
+                        ) : "Login"}
                     </button>
                 </form>
                 <div className="mt-6 flex flex-col items-center space-y-2">

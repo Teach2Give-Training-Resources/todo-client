@@ -20,14 +20,14 @@ const schema = yup.object({
 
 const VerifyUser = () => {
     const navigate = useNavigate()
-    const location = useLocation(); 
+    const location = useLocation();
     const emailFromState = location.state?.email || '';
 
-    const [verifyUser] = usersAPI.useVerifyUserMutation();
+    const [verifyUser, { isLoading }] = usersAPI.useVerifyUserMutation();
     const {
         register,
         handleSubmit,
-        formState: { errors, isSubmitting },
+        formState: { errors },
     } = useForm<VerifyInputs>({
         resolver: yupResolver(schema),
         defaultValues: {
@@ -64,8 +64,8 @@ const VerifyUser = () => {
                         {...register('email')}
                         placeholder="Email"
                         className="input border border-gray-300 rounded w-full p-2 focus:ring-2 focus:ring-blue-500 text-lg"
-                        readOnly={!!emailFromState} 
-                        
+                        readOnly={!!emailFromState}
+
                     />
                     {errors.email && (
                         <span className="text-red-700 text-sm">{errors.email.message}</span>
@@ -82,12 +82,12 @@ const VerifyUser = () => {
                         <span className="text-red-700 text-sm">{errors.code.message}</span>
                     )}
 
-                    <button
-                        type="submit"
-                        className="btn btn-primary w-full mt-4"
-                        disabled={isSubmitting}
-                    >
-                        Verify
+                    <button type="submit" className="btn btn-primary w-full mt-4" disabled={isLoading}>
+                        {isLoading ? (
+                            <>
+                                <span className="loading loading-spinner text-primary" /> Verifying...
+                            </>
+                        ) : "Verify"}
                     </button>
                 </form>
             </div>
