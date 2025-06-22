@@ -10,6 +10,7 @@ import Error from './components/error/Error'
 import VerifyUser from './pages/auth/VerifyUser'
 import { Toaster } from 'sonner'
 import Welcome from './pages/dashboard/Welcome'
+import Todos from './pages/dashboard/main/todos/Todos'
 
 
 function App() {
@@ -44,7 +45,7 @@ function App() {
         },
         {
           path: 'todos',
-          element: <h1>Todos</h1>
+          element: <Todos />
         },
         {
           path: 'users',

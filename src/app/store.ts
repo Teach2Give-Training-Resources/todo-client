@@ -4,6 +4,7 @@ import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import { loginAPI } from '../features/login/loginAPI'
 import userSlice from '../features/login/userSlice'
+import { todosAPI } from '../features/todos/todosAPI'
 
 const persistConfig = {
     key: 'root', //storage key for the persisted state
@@ -17,6 +18,7 @@ const persistConfig = {
 const rootReducer = combineReducers({ //combining all reducers into one root reducer
     [usersAPI.reducerPath]: usersAPI.reducer,
     [loginAPI.reducerPath]: loginAPI.reducer,
+    [todosAPI.reducerPath]: todosAPI.reducer,
     user: userSlice
 })
 
@@ -30,7 +32,8 @@ export const store = configureStore({
         serializableCheck: false // disable serializable check for the persisted state - A serializable value is a value that can be converted to JSON and back without losing information. Its desabled here because the RTK Query APIs use non-serializable values (like functions) in their state.
     })
         .concat(usersAPI.middleware) // add the usersAPI middleware to the store - helps with caching, invalidation, polling, and other features
-        .concat(loginAPI.middleware), // add the loginAPI middleware
+        .concat(loginAPI.middleware) // add the loginAPI middleware
+        .concat(todosAPI.middleware) // add the todosAPI middleware
 })
 
 export const persistedStore = persistStore(store) // needed for persisting the store to local storage
