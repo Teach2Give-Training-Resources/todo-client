@@ -12,12 +12,7 @@ export type DrawerData = {
 }
 
 export const adminDrawerData: DrawerData[] = [
-    {
-        id: "analytics",
-        name: "Analytics",
-        icon: TbBrandGoogleAnalytics,
-        link: "analytics"
-    },
+
     {
         id: "todos",
         name: "Todos",
@@ -35,6 +30,12 @@ export const adminDrawerData: DrawerData[] = [
         name: "Profile",
         icon: FaUserCheck,
         link: "profile"
+    },
+    {
+        id: "analytics",
+        name: "Analytics",
+        icon: TbBrandGoogleAnalytics,
+        link: "analytics"
     },
 
 ]

@@ -1,11 +1,16 @@
 
 import { type RootState } from "../../app/store";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { usersAPI } from "../../features/users/usersAPI";
+import { useNavigate } from "react-router";
+import { logout } from "../../features/login/userSlice";
 import UpdateProfile from "./manageUsers/UpdateProfile";
 
 
+
 const Profile = () => {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const user = useSelector((state: RootState) => state.user);
     const user_id = user.user?.user_id;
 
@@ -37,14 +42,27 @@ const Profile = () => {
                             <p className="text-gray-600">Verified? {data?.isVerified ? 'Yes' : 'No'}</p>
                         </div>
                     </div>
-                    <button
-                        className="btn btn-primary flex mx-auto"
-                        onClick={() => {
-                            (document.getElementById('update_profile_modal') as HTMLDialogElement)?.showModal();
-                        }}
-                    >
-                        Update Profile
-                    </button>
+                    <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                        <button
+                            className="btn btn-primary flex mx-auto"
+                            onClick={() => {
+                                (document.getElementById('update_profile_modal') as HTMLDialogElement)?.showModal();
+                            }}
+                        >
+                            Update Profile
+                        </button>
+
+                        <button
+                            className="btn btn-primary flex mx-auto"
+                            onClick={() => {
+                                dispatch(logout());
+                                    navigate("/")                                
+                            }}
+                        >
+                            LogOut
+                        </button>
+                    </div>
+
                 </div>
             )}
             {/* Modal */}

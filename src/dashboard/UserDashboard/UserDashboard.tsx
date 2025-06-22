@@ -27,7 +27,7 @@ const UserDashboard = () => {
                     {drawerOpen ? <IoCloseSharp /> : <FaBars />}
                 </button>
                 <span className="text-white text-lg font-semibold">
-                    Welcome to your dashboard
+                    Welcome to your User dashboard
                 </span>
             </div>
 

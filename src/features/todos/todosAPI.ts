@@ -55,6 +55,11 @@ export const todosAPI = createApi({
                 method: 'DELETE'
             }),
             invalidatesTags: ['Todos'] // invalidates the cache for the Todos tag when a todo is deleted
+        }),
+        // get todos by user id
+        getTodosByUserId: builder.query<{ data: TTodo[] }, number>({
+            query: (userId) => `/todo/user/${userId}`,
+            providesTags: ['Todos'] // this tells RTK Query that this endpoint provides the Todos tag, so it can be used to invalidate the cache when a new todo is created
         })
     })
 })
