@@ -32,7 +32,7 @@ const Profile = () => {
                         <img
                             src={data?.image_url || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'}
                             alt="User Avatar"
-                            className="w-28 rounded-full mr-4 border-2 border-gray-400"
+                            className="w-40 h-40 object-cover rounded-full mr-4 border-2 border-gray-400"
                         />
                         <div>
                             <h3 className="text-lg font-bold">Name: {data?.firstName} {data?.lastName}</h3>

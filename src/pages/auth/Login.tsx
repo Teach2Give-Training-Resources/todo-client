@@ -43,6 +43,7 @@ function Login() {
 
         try {
             const response = await loginUser(data).unwrap()
+            console.log("Login response:", response);
             dispatch(loginSuccess(response))
 
             console.log("Login response:", response);

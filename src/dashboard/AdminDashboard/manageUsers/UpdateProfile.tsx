@@ -3,7 +3,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { usersAPI } from "../../../features/users/usersAPI";
 import { toast } from "sonner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 type UpdateProfileInputs = {
     firstName: string;
@@ -30,6 +31,9 @@ interface UpdateProfileProps {
 }
 
 const UpdateProfile = ({ user, refetch }: UpdateProfileProps) => {
+    const [image, setImage] = useState<File | null>(null);
+    const [isUploading, setIsUploading] = useState(false);
+
     const [updateUser, { isLoading }] = usersAPI.useUpdateUserMutation(
         { fixedCacheKey: "updateUser" }
     );
@@ -60,9 +64,39 @@ const UpdateProfile = ({ user, refetch }: UpdateProfileProps) => {
         }
     }, [user, setValue, reset]);
 
+
+    const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0]
+        if (file) {
+            setImage(file);
+        }
+    }
+
     const onSubmit: SubmitHandler<UpdateProfileInputs> = async (data) => {
         try {
-            await updateUser({ id: Number(user.id), ...data })
+            console.log('Update Profile data:', data);
+            let image_url = data.image_url
+            // If an image file is selected, upload it and get the URL
+            if (image) {
+                setIsUploading(true);
+                const formData = new FormData();
+                formData.append('file', image);
+                formData.append('upload_preset', 'todoclient')
+                const response = await axios.post(
+                    'https://api.cloudinary.com/v1_1/dl3ovuqjn/image/upload',
+                    formData
+                )
+                console.log("Cloudinary response:", response.data);
+                setIsUploading(false);
+                if (response.data && response.data.secure_url) {
+                    image_url = response.data.secure_url
+                } else {
+                    toast.error("Image upload failed. Please try again.");
+                    return;
+                }
+            }
+
+            await updateUser({ id: Number(user.id), ...data, image_url }).unwrap()
 
             toast.success("Profile updated successfully!");
             if (refetch) {
@@ -71,6 +105,7 @@ const UpdateProfile = ({ user, refetch }: UpdateProfileProps) => {
             reset();
             (document.getElementById('update_profile_modal') as HTMLDialogElement)?.close();
         } catch (error) {
+            setIsUploading(false);
             console.log("Error updating profile:", error);
             toast.error("Failed to update profile. Please try again.");
         }
@@ -100,7 +135,7 @@ const UpdateProfile = ({ user, refetch }: UpdateProfileProps) => {
                     {errors.lastName && (
                         <span className="text-sm text-red-700">{errors.lastName.message}</span>
                     )}
-
+                    {/* 
                     <input
                         type="text"
                         {...register("image_url")}
@@ -109,11 +144,39 @@ const UpdateProfile = ({ user, refetch }: UpdateProfileProps) => {
                     />
                     {errors.image_url && (
                         <span className="text-sm text-red-700">{errors.image_url.message}</span>
+                    )} */}
+
+                    <div className="flex flex-col gap-2">
+                        <label className="text-sm text-gray-300">Upload Image</label>
+                        <input
+                            type="file" // File input for image upload
+                            accept="image/*" // Accept only image files - jpeg, png, etc.
+                            onChange={handleImageUpload}
+                            className="file-input file-input-bordered file-input-primary w-full max-w-xs"
+                        />
+
+                        {
+                            image && (
+                                <img
+                                    src={URL.createObjectURL(image)}
+                                    alt="preview"
+                                    className="w-24 h-24 rounded-full object-cover mx-auto mb-2"
+                                />
+                            )
+                        } {/* used to preview the image before uploading */} 
+                        
+
+                    </div>
+
+                    {errors.image_url && (
+                        <span className="text-sm text-red-700">{errors.image_url.message}</span>
                     )}
 
+
+
                     <div className="modal-action flex flex-col sm:flex-row gap-2">
-                        <button type="submit" className="btn btn-primary w-full sm:w-auto" disabled={isLoading}>
-                            {isLoading ? (
+                        <button type="submit" className="btn btn-primary w-full sm:w-auto" disabled={isLoading || isUploading}>
+                            {(isLoading || isUploading) ? (
                                 <>
                                     <span className="loading loading-spinner text-primary" /> Updating...
                                 </>
@@ -126,6 +189,7 @@ const UpdateProfile = ({ user, refetch }: UpdateProfileProps) => {
                                 (document.getElementById('update_profile_modal') as HTMLDialogElement)?.close();
                                 reset();
                             }}
+                            disabled={isLoading || isUploading}
                         >
                             Cancel
                         </button>
