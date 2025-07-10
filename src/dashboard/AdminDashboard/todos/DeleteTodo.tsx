@@ -37,6 +37,7 @@ const DeleteTodo = ({ todo }: DeleteTodoProps) => {
                 </p>
                 <div className="modal-action flex gap-4">
                     <button
+                        data-test="delete-todo-confirm-button"
                         className="btn btn-error"
                         onClick={handleDelete}
                         disabled={isLoading}

@@ -32,6 +32,7 @@ const Todos = () => {
             {/* Create Todo Button */}
             <div className="flex justify-center mb-3 mt-3">
                 <button
+                    data-test="create-todo-button"
                     className="btn bg-gray-600 text-white hover:bg-gray-700 border border-gray-400 rounded-lg px-4 py-2 text-lg"
                     onClick={() => (document.getElementById('my_modal_5') as HTMLDialogElement)?.showModal()}
                 >
@@ -78,12 +79,16 @@ const Todos = () => {
                                     </td>
                                     {/* Actions to delete and Edit */}
                                     <td className="px-4 py-2 flex">
-                                        <button className="btn btn-sm btn-primary mr-4 text-blue-500"
+                                        <button
+                                        data-test="edit-todo-button" 
+                                        className="btn btn-sm btn-primary mr-4 text-blue-500"
                                             onClick={() => handleEdit(todo)}
                                         >
                                             <FaEdit size={20} />
                                         </button>
-                                        <button className="btn btn-sm btn-danger text-red-500"
+                                        <button
+                                            data-test="delete-todo-button"
+                                            className="btn btn-sm btn-danger text-red-500"
                                             onClick={() => {
                                                 setTodoToDelete(todo);
                                                 (document.getElementById('delete_modal') as HTMLDialogElement)?.showModal();

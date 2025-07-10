@@ -69,6 +69,7 @@ function Login() {
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 
                     <input
+                        data-test="login-email-input"
                         type="email"
                         {...register('email')}
                         placeholder="Email"
@@ -80,6 +81,7 @@ function Login() {
                     )}
 
                     <input
+                        data-test="login-password-input"
                         type="password"
                         {...register('password')}
                         placeholder="Password"
@@ -90,7 +92,10 @@ function Login() {
                     )}
 
 
-                    <button type="submit" className="btn btn-primary w-full mt-4" disabled={isLoading}>
+                    <button
+                        data-test="login-submit-button"
+                        type="submit" className="btn btn-primary w-full mt-4"
+                        disabled={isLoading}>
                         {isLoading ? (
                             <>
                                 <span className="loading loading-spinner text-primary" /> Logining...

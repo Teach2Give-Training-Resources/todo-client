@@ -64,6 +64,7 @@ function Register() {
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 
                     <input
+                        data-test="signup-firstname"
                         type="text"
                         {...register('firstName')}
                         placeholder="First Name"
@@ -75,6 +76,7 @@ function Register() {
                     )}
 
                     <input
+                        data-test="signup-lastname"
                         type="text"
                         {...register('lastName')}
                         placeholder="Last Name"
@@ -86,6 +88,7 @@ function Register() {
                     )}
 
                     <input
+                        data-test="signup-email"
                         type="email"
                         {...register('email')}
                         placeholder="Email"
@@ -97,6 +100,7 @@ function Register() {
                     )}
 
                     <input
+                        data-test="signup-password"
                         type="password"
                         {...register('password')}
                         placeholder="Password"
@@ -108,6 +112,7 @@ function Register() {
                     )}
 
                     <input
+                        data-test="signup-confirmpassword"
                         type="password"
                         {...register('confirmPassword')}
                         placeholder="Confirm Password"
@@ -118,7 +123,10 @@ function Register() {
                         <span className=" text-red-700 text-sm">{errors.confirmPassword.message}</span>
                     )}
 
-                    <button type="submit" className="btn btn-primary w-full mt-4" disabled={isLoading}>
+                    <button
+                        data-test="signup-submitbtn"
+                        type="submit"
+                        className="btn btn-primary w-full mt-4" disabled={isLoading}>
                         {isLoading ? (
                             <>
                                 <span className="loading loading-spinner text-primary" /> Registering...

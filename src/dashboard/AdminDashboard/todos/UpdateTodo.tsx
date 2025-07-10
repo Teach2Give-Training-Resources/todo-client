@@ -78,6 +78,7 @@ const UpdateTodo = ({ todo }: UpdateTodoProps) => {
                 <h3 className="font-bold text-lg mb-4">Update Todo</h3>
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
                     <input
+                        data-test="edit-todo-name-input"
                         type="text"
                         {...register("todoName")}
                         placeholder="Todo Name"
@@ -88,6 +89,7 @@ const UpdateTodo = ({ todo }: UpdateTodoProps) => {
                     )}
 
                     <textarea
+                        data-test="edit-todo-description-input"
                         {...register("description")}
                         placeholder="Description"
                         className="textarea textarea-bordered w-full p-2 focus:ring-2 focus:ring-blue-500 text-lg bg-white text-gray-800"
@@ -97,6 +99,7 @@ const UpdateTodo = ({ todo }: UpdateTodoProps) => {
                     )}
 
                     <input
+                        data-test="edit-todo-userid-input"
                         type="number"
                         {...register("userId")}
                         placeholder="User ID"
@@ -107,6 +110,7 @@ const UpdateTodo = ({ todo }: UpdateTodoProps) => {
                     )}
 
                     <input
+                        data-test="edit-todo-date-input"
                         type="date"
                         {...register("dueDate")}
                         className="input rounded w-full p-2 focus:ring-2 focus:ring-blue-500 text-lg bg-white text-gray-800"
@@ -121,6 +125,7 @@ const UpdateTodo = ({ todo }: UpdateTodoProps) => {
                             <div className="flex gap-4">
                                 <label className="flex items-center gap-1">
                                     <input
+                                        data-test="edit-todo-status-completed"
                                         type="radio"
                                         value="true"
                                         {...register("isCompleted")}
@@ -130,6 +135,7 @@ const UpdateTodo = ({ todo }: UpdateTodoProps) => {
                                 </label>
                                 <label className="flex items-center gap-1">
                                     <input
+                                        data-test="edit-todo-status-pending"
                                         type="radio"
                                         value="false"
                                         {...register("isCompleted")}
@@ -145,27 +151,29 @@ const UpdateTodo = ({ todo }: UpdateTodoProps) => {
                     )}
 
                     <div className="modal-action">
-                        <button type="submit" className="btn btn-primary" disabled={isLoading}>
-                            {isLoading ? (
-                                <>
-                                    <span className="loading loading-spinner text-primary" /> Updating...
-                                </>
-                            ) : "Update"}
-                        </button>
                         <button
-                            className="btn"
-                            type="button"
-                            onClick={() => {
-                                (document.getElementById('update_modal') as HTMLDialogElement)?.close();
-                                reset();
-                            }}
-                        >
-                            Close
-                        </button>
-                    </div>
-                </form>
+                            data-test="update-todo-button"
+                        type="submit" className="btn btn-primary" disabled={isLoading}>
+                        {isLoading ? (
+                            <>
+                                <span className="loading loading-spinner text-primary" /> Updating...
+                            </>
+                        ) : "Update"}
+                    </button>
+                    <button
+                        className="btn"
+                        type="button"
+                        onClick={() => {
+                            (document.getElementById('update_modal') as HTMLDialogElement)?.close();
+                            reset();
+                        }}
+                    >
+                        Close
+                    </button>
             </div>
-        </dialog>
+        </form>
+            </div >
+        </dialog >
     );
 };
 
